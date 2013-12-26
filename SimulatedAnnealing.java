@@ -54,10 +54,26 @@ public class SimulatedAnnealing {
             }
         }
         
+        //calculate the distance matrix
+        RouletteWheel wheel = new RouletteWheel();
+        
+        System.out.println("Distance matrix: ");
+        wheel.printDistMatrix();
+        
+        System.out.println("Roulette wheel percentages:");
+        
+        wheel.printFitMatrix();
+        
+        int[] indices = wheel.spinWheel();
+        System.out.println("Source: "+indices[0]);
+        System.out.println("Sink: "+indices[1]);
+        
+        System.exit(0);
+        
         // Set initial temp
         int tempVal = 1000;
 
-        while (tempVal <= 1000000000)
+        while (tempVal <= 10000)
         {
             double temp = tempVal;
             // Cooling rate
