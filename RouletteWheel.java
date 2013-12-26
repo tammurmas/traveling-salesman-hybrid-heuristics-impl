@@ -43,14 +43,14 @@ public class RouletteWheel {
                     this.fitMatrix[i][j] = 0;
                 else
                 {
-                    this.fitMatrix[i][j] = 1/(this.distMatrix[i][j]/1000);
+                    this.fitMatrix[i][j] = 1/(this.distMatrix[i][j]/1000);//guess we should put the max edge as the divider
                     totalFit += this.fitMatrix[i][j];
                 }
             }
         }
         
-        this.printFitMatrix();
-        System.out.println("Total fit: "+totalFit);
+        //this.printFitMatrix();
+        //System.out.println("Total fit: "+totalFit);
         
         double totalSum = 0;
         for (int i=0; i<TourManager.numberOfCities(); i++)
@@ -78,7 +78,8 @@ public class RouletteWheel {
         
         for (int i=0; i<list.size(); i++)
         {
-            System.out.print(list.get(i)+" ");
+            //System.out.print(list.get(i)+" ");
+            TourManager.getCity(i);
         }
         
     }
@@ -91,7 +92,7 @@ public class RouletteWheel {
     public int[] spinWheel()
     {
         double winNr = randDouble();
-        System.out.println("Winning number is: "+winNr);
+        //System.out.println("Winning number is: "+winNr);
         double sum = 0.0;
         int[] indices = new int[2];
         
@@ -102,8 +103,8 @@ public class RouletteWheel {
                 sum += this.fitMatrix[i][j];
                 if(winNr < sum)
                 {
-                    System.out.println(i+" "+j);
-                    System.out.println("Sum: "+sum);
+                    //System.out.println(i+" "+j);
+                    //System.out.println("Sum: "+sum);
                     
                     indices[0] = i;
                     indices[1] = j;

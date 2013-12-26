@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class SimulatedAnnealing {
 
-    private static final String fileName = "TSP_100.txt";
+    private static final String fileName = "TSP_10.txt";//using input files from lectures to test
 
     public static void main(String[] args) throws IOException {
         
@@ -39,7 +39,8 @@ public class SimulatedAnnealing {
                     int x = Integer.parseInt(lineParts[0]);
                     int y = Integer.parseInt(lineParts[1]);
                     
-                    City city = new City(x,y, i);
+                    //we start city indices from 0 to populate the distance matrix in correct manner
+                    City city = new City(x, y, i-1);
 
                     TourManager.addCity(city);
                             
@@ -57,27 +58,39 @@ public class SimulatedAnnealing {
         //calculate the distance matrix
         RouletteWheel wheel = new RouletteWheel();
         
-        System.out.println("Distance matrix: ");
-        wheel.printDistMatrix();
+        /*
+        //System.out.println("Distance matrix: ");
+        //wheel.printDistMatrix();
         
-        System.out.println("Roulette wheel percentages:");
+        //System.out.println("Roulette wheel percentages:");
         
-        wheel.printFitMatrix();
+        //wheel.printFitMatrix();
         
         int[] indices = wheel.spinWheel();
         System.out.println("Source: "+indices[0]);
         System.out.println("Sink: "+indices[1]);
         
-        System.exit(0);
+        // Initialize intial solution
+        Tour sol = new Tour();
+        sol.generateIndividual();
+        
+        System.out.println(sol.toString());
+        
+        sol.swap(indices[0], indices[1]);
+        
+        System.out.println(sol.toString());
+        
+        System.exit(0);*/
         
         // Set initial temp
         int tempVal = 1000;
 
-        while (tempVal <= 10000)
+        while (tempVal <= 1000000)
         {
             double temp = tempVal;
             // Cooling rate
             double coolingRate = 1/temp;
+            //double coolingRate = 0.1;
 
             // Initialize intial solution
             Tour currentSolution = new Tour();
@@ -86,6 +99,7 @@ public class SimulatedAnnealing {
             //Tour currentSolution = TSP.nearestNeighbor();
 
             System.out.println("Initial solution distance: " + currentSolution.getDistance());
+            System.out.println(currentSolution);
 
             // Set as current best
             Tour best = new Tour(currentSolution.getTour());
@@ -96,7 +110,7 @@ public class SimulatedAnnealing {
                 Tour newSolution = new Tour(currentSolution.getTour());
 
                 // Get a random positions in the tour
-                int tourPos1 = (int) (newSolution.tourSize() * Math.random());
+                /*int tourPos1 = (int) (newSolution.tourSize() * Math.random());
                 int tourPos2 = (int) (newSolution.tourSize() * Math.random());
 
                 // Get the cities at selected positions in the tour
@@ -105,8 +119,14 @@ public class SimulatedAnnealing {
 
                 // Swap them
                 newSolution.setCity(tourPos2, citySwap1);
-                newSolution.setCity(tourPos1, citySwap2);
+                newSolution.setCity(tourPos1, citySwap2);*/
+                
+                int[] indices = wheel.spinWheel();
+                
+                newSolution.swap(indices[0], indices[1]);
 
+                //System.out.println("Swapped: "+newSolution.toString());
+                
                 // Get energy of solutions
                 int currentEngery = currentSolution.getDistance();
                 int neighbourEngery = newSolution.getDistance();

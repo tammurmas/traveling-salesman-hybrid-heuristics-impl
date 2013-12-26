@@ -96,6 +96,33 @@ public class Tour{
     }
 
     /**
+     * "Swap" the "sink" city by removing it from its original location and placing behind the "source" city
+     * @param sourceId
+     * @param sinkId 
+     */
+    public void swap(int sourceId, int sinkId)
+    {
+        City sink = TourManager.getCity(sinkId);
+        
+        ArrayList copy = new ArrayList();
+        copy.addAll(this.getTour());
+        this.getTour().clear();
+        
+        for (int cityIndex = 0; cityIndex < TourManager.numberOfCities(); cityIndex++) {
+            
+            if(((City)copy.get(cityIndex)).getI() != sinkId)
+            {
+                this.getTour().add(copy.get(cityIndex));
+            }
+            
+            if(((City)copy.get(cityIndex)).getI() == sourceId)
+            {
+                this.getTour().add(sink);
+            }
+        }
+    }
+    
+    /**
      * Helper to get the tour size
      * @return 
      */
