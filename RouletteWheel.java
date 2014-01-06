@@ -43,13 +43,13 @@ public class RouletteWheel {
                     this.fitMatrix[i][j] = 0;
                 else
                 {
-                    this.fitMatrix[i][j] = 1/(this.distMatrix[i][j]/1000);//guess we should put the max edge as the divider
+                    this.fitMatrix[i][j] = 1/(this.distMatrix[i][j]/maxDist);//guess we should put the max edge as the divider
                     totalFit += this.fitMatrix[i][j];
                 }
             }
         }
         
-        //this.printFitMatrix();
+        this.printFitMatrix();
         //System.out.println("Total fit: "+totalFit);
         
         double totalSum = 0;
