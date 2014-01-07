@@ -41,6 +41,9 @@ public class TourManager {
         return destinationCities.size();
     }
     
-    
+    public static void clearTour()
+    {
+        destinationCities.clear();
+    }
     
 }

@@ -5,7 +5,7 @@
  * 
  * Edited by: Urmas T.
  * 
- * Calculating optimal solution for the TSP using the simulated annealing algorithm
+ * Calculating optimal solution for the TSP using the SA algorithm with the swapping operator
  */
 
 package tamm.aa.project;
@@ -14,7 +14,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class SimulatedAnnealing {
+public class SASwap {
 
     private static final String fileName = "berlin52.txt";//using input files from lectures to test
 
@@ -55,42 +55,13 @@ public class SimulatedAnnealing {
             }
         }
         
-        //calculate the distance matrix
-        //RouletteWheel wheel = new RouletteWheel();
-        
-        /*
-        //System.out.println("Distance matrix: ");
-        //wheel.printDistMatrix();
-        
-        //System.out.println("Roulette wheel percentages:");
-        
-        //wheel.printFitMatrix();
-        
-        int[] indices = wheel.spinWheel();
-        System.out.println("Source: "+indices[0]);
-        System.out.println("Sink: "+indices[1]);
-        
-        // Initialize intial solution
-        Tour sol = new Tour();
-        sol.generateIndividual();
-        
-        System.out.println(sol.toString());
-        
-        sol.swap(indices[0], indices[1]);
-        
-        System.out.println(sol.toString());
-        
-        System.exit(0);*/
-        
         // Set initial temp
         int tempVal = 1000;
 
         while (tempVal <= 100000)
         {
             double temp = tempVal;
-            // Cooling rate
             double coolingRate = 1/temp;
-            //double coolingRate = 0.0001;
 
             // Initialize intial solution
             Tour currentSolution = new Tour();
@@ -99,7 +70,6 @@ public class SimulatedAnnealing {
             //Tour currentSolution = TSP.nearestNeighbor();
 
             System.out.println("Initial solution distance: " + currentSolution.getDistance());
-            //System.out.println(currentSolution);
 
             // Set as current best
             Tour best = new Tour(currentSolution.getTour());
@@ -121,12 +91,6 @@ public class SimulatedAnnealing {
                 newSolution.setCity(tourPos2, citySwap1);
                 newSolution.setCity(tourPos1, citySwap2);
                 
-                /*int[] indices = wheel.spinWheel();
-                
-                newSolution.swap(indices[0], indices[1]);*/
-
-                //System.out.println("Swapped: "+newSolution.toString());
-                
                 // Get energy of solutions
                 int currentEngery = currentSolution.getDistance();
                 int neighbourEngery = newSolution.getDistance();
@@ -147,7 +111,6 @@ public class SimulatedAnnealing {
 
             System.out.println("Final solution distance: " + best.getDistance());
             System.out.println("Starting temperature: "+tempVal);
-            //System.out.println("Tour: \n" + best);
             
             tempVal *= 10;
         }

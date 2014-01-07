@@ -1,13 +1,12 @@
-package tamm.aa.project;
-
-import java.util.ArrayList;
-import java.util.Random;
-
 /**
  * Roulette wheel implementation
  * 
  * @author Urmas T.
  */
+package tamm.aa.project;
+
+import java.util.Random;
+
 public class RouletteWheel {
     
     protected double[][] distMatrix;
@@ -32,7 +31,7 @@ public class RouletteWheel {
         }
         
         this.fitMatrix = new double[TourManager.numberOfCities()][TourManager.numberOfCities()];
-        double totalFit = 0;
+        double totalFit = 0;//sum of all fitness values to define ranges in the roulette wheel
         
         for (int i=0; i<TourManager.numberOfCities(); i++)
         {
@@ -43,16 +42,13 @@ public class RouletteWheel {
                     this.fitMatrix[i][j] = 0;
                 else
                 {
-                    this.fitMatrix[i][j] = 1/(this.distMatrix[i][j]/maxDist);//guess we should put the max edge as the divider
+                    this.fitMatrix[i][j] = 1/(this.distMatrix[i][j]/maxDist);//using the max edge as the divider shorter edges get larger fitness values
                     totalFit += this.fitMatrix[i][j];
                 }
             }
         }
         
-        this.printFitMatrix();
-        //System.out.println("Total fit: "+totalFit);
-        
-        double totalSum = 0;
+        //calculate ranges on the roulette wheel
         for (int i=0; i<TourManager.numberOfCities(); i++)
         {
             
@@ -63,27 +59,6 @@ public class RouletteWheel {
         }
     }
     
-    //just for testing
-    public static void main(String[] args)
-    {
-        ArrayList<Integer> list = new ArrayList<Integer>();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
-        list.add(5);
-        
-        list.remove(1);
-        list.add(3, 2);
-        
-        for (int i=0; i<list.size(); i++)
-        {
-            //System.out.print(list.get(i)+" ");
-            TourManager.getCity(i);
-        }
-        
-    }
-    
     /**
      * Spinning the wheel 
      * Generate a random winning number and sum the values in matrix until reaching it
@@ -91,9 +66,8 @@ public class RouletteWheel {
      */
     public int[] spinWheel()
     {
-        double winNr = randDouble();
-        //System.out.println("Winning number is: "+winNr);
-        double sum = 0.0;
+        double winNr  = randDouble();
+        double sum    = 0.0;
         int[] indices = new int[2];
         
         for (int i=0; i<TourManager.numberOfCities(); i++)
@@ -101,11 +75,8 @@ public class RouletteWheel {
             for (int j=0; j<TourManager.numberOfCities(); j++)
             {
                 sum += this.fitMatrix[i][j];
-                if(winNr < sum)
+                if(winNr < sum)//we have reached the needed range
                 {
-                    //System.out.println(i+" "+j);
-                    //System.out.println("Sum: "+sum);
-                    
                     indices[0] = i;
                     indices[1] = j;
                     
