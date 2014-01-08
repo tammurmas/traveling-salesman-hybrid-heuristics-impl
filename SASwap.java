@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class SASwap {
 
-    private static final String fileName = "berlin52.txt";//using input files from lectures to test
+    private static final String fileName = "kroB150.txt";//using input files from lectures to test
 
     public static void main(String[] args) throws IOException {
         
@@ -48,7 +48,9 @@ public class SASwap {
                 i++;
             }
         }
-        catch (IOException e){}
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
         finally{
              if (inputStream != null) {
                 inputStream.close();
@@ -56,64 +58,61 @@ public class SASwap {
         }
         
         // Set initial temp
-        int tempVal = 1000;
+        double temp = 100000;
+        double coolingRate = 1/temp;
 
-        while (tempVal <= 100000)
-        {
-            double temp = tempVal;
-            double coolingRate = 1/temp;
+        StopWatch timer = new StopWatch();
+        timer.start();
+        
+        // Initialize intial solution
+        Tour currentSolution = new Tour();
+        currentSolution.generateIndividual();
 
-            // Initialize intial solution
-            Tour currentSolution = new Tour();
-            currentSolution.generateIndividual();
-            
-            //Tour currentSolution = TSP.nearestNeighbor();
+        //Tour currentSolution = TSP.nearestNeighbor();
 
-            System.out.println("Initial solution distance: " + currentSolution.getDistance());
+        System.out.println("Initial solution distance: " + currentSolution.getDistance());
 
-            // Set as current best
-            Tour best = new Tour(currentSolution.getTour());
+        // Set as current best
+        Tour best = new Tour(currentSolution.getTour());
 
-            // Loop until system has cooled
-            while (temp > 1) {
-                // Create new neighbour tour
-                Tour newSolution = new Tour(currentSolution.getTour());
+        // Loop until system has cooled
+        while (temp > 1) {
+            // Create new neighbour tour
+            Tour newSolution = new Tour(currentSolution.getTour());
 
-                // Get a random positions in the tour
-                int tourPos1 = (int) (newSolution.tourSize() * Math.random());
-                int tourPos2 = (int) (newSolution.tourSize() * Math.random());
+            // Get a random positions in the tour
+            int tourPos1 = (int) (newSolution.tourSize() * Math.random());
+            int tourPos2 = (int) (newSolution.tourSize() * Math.random());
 
-                // Get the cities at selected positions in the tour
-                City citySwap1 = newSolution.getCity(tourPos1);
-                City citySwap2 = newSolution.getCity(tourPos2);
+            // Get the cities at selected positions in the tour
+            City citySwap1 = newSolution.getCity(tourPos1);
+            City citySwap2 = newSolution.getCity(tourPos2);
 
-                // Swap them
-                newSolution.setCity(tourPos2, citySwap1);
-                newSolution.setCity(tourPos1, citySwap2);
-                
-                // Get energy of solutions
-                int currentEngery = currentSolution.getDistance();
-                int neighbourEngery = newSolution.getDistance();
+            // Swap them
+            newSolution.setCity(tourPos2, citySwap1);
+            newSolution.setCity(tourPos1, citySwap2);
 
-                // Decide if we should accept the neighbour
-                if (acceptanceProbability(currentEngery, neighbourEngery, temp) > Math.random()) {
-                    currentSolution = new Tour(newSolution.getTour());
-                }
+            // Get energy of solutions
+            int currentEngery = currentSolution.getDistance();
+            int neighbourEngery = newSolution.getDistance();
 
-                // Keep track of the best solution found
-                if (currentSolution.getDistance() < best.getDistance()) {
-                    best = new Tour(currentSolution.getTour());
-                }
-
-                // Cool system
-                temp *= 1-coolingRate;
+            // Decide if we should accept the neighbour
+            if (acceptanceProbability(currentEngery, neighbourEngery, temp) > Math.random()) {
+                currentSolution = new Tour(newSolution.getTour());
             }
 
-            System.out.println("Final solution distance: " + best.getDistance());
-            System.out.println("Starting temperature: "+tempVal);
-            
-            tempVal *= 10;
+            // Keep track of the best solution found
+            if (currentSolution.getDistance() < best.getDistance()) {
+                best = new Tour(currentSolution.getTour());
+            }
+
+            // Cool system
+            temp *= 1-coolingRate;
         }
+        timer.stop();
+        
+        System.out.println(timer.getElapsedTimeSecs()+";"+best.getDistance());
+            
     }
     
     /**

@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class SAWheel {
 
-    private static final String fileName = "berlin52.txt";//using input files from lectures to test
+    private static final String fileName = "kroB150.txt";//using input files from lectures to test
 
     public static void main(String[] args) throws IOException {
 
@@ -57,6 +57,7 @@ public class SAWheel {
         }
         
         StopWatch timer = new StopWatch();
+        timer.start();
         
         // calculate the distance matrix
         // since it is part of the pre-process phase we have to re-calculate it each time            
@@ -75,8 +76,6 @@ public class SAWheel {
 
         double temp        = 100000;
         double coolingRate = 1/temp;
-
-        timer.start();
 
         // Loop until system has cooled
         while (temp > 1) {
@@ -107,8 +106,9 @@ public class SAWheel {
 
         timer.stop();
 
-        System.out.println("Final solution distance: " + best.getDistance());
-        System.out.println("Elapsed time: " + timer.getElapsedTimeSecs());
+        //System.out.println("Final solution distance: " + best.getDistance());
+        //System.out.println("Elapsed time: " + timer.getElapsedTimeSecs());
+        System.out.println(timer.getElapsedTimeSecs()+";"+best.getDistance());
         System.out.println();
             
     }
