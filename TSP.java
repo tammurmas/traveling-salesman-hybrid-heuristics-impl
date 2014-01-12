@@ -4,57 +4,14 @@
  */
 package tamm.aa.project;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * TSP using the nearest neighbour approach
+ * TSP using the greedy nearest neighbor approach
  * 
  * @author Urmas T.
  */
 public class TSP {
-    private static final String fileName = "TSP_100.txt";
-
-    public static void main(String[] args) throws IOException {
-        
-        BufferedReader inputStream = null;
-
-        String line;
-        
-        try {
-            inputStream = new BufferedReader(new FileReader(fileName));
-            
-            int i = 0;
-            
-            while( (line = inputStream.readLine()) != null)
-            {
-                //skip first line
-                if(i > 0)
-                {
-                    String[] lineParts = line.split("\\s+");//any number of whitespace characters as delimiter
-                
-                    int x = Integer.parseInt(lineParts[0]);
-                    int y = Integer.parseInt(lineParts[1]);
-                    
-                    City city = new City(x,y, i);
-
-                    TourManager.addCity(city);
-                            
-                }
-                i++;
-            }
-        }
-        catch (IOException e){}
-        finally{
-             if (inputStream != null) {
-                inputStream.close();
-            }
-        }
-        
-       nearestNeighbor();
-    }
     
     /**
      * Calculating the path using the nearest neighbor algorithm
@@ -104,9 +61,6 @@ public class TSP {
             minDistance = Double.MAX_VALUE;
             
         }
-        
-        System.out.println(tour);
-        System.out.println(tour.getDistance());
         
         return tour;
     }

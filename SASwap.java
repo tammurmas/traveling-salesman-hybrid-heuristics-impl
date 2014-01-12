@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class SASwap {
 
-    private static final String fileName = "kroB150.txt";//using input files from lectures to test
+    private static final String fileName = "kroB150.txt";//name of the input file
 
     public static void main(String[] args) throws IOException {
         
@@ -64,11 +64,12 @@ public class SASwap {
         StopWatch timer = new StopWatch();
         timer.start();
         
-        // Initialize intial solution
+        // Initialize random solution
         Tour currentSolution = new Tour();
         currentSolution.generateIndividual();
+        System.out.println(currentSolution.toString());
 
-        //Tour currentSolution = TSP.nearestNeighbor();
+        //Tour currentSolution = TSP.nearestNeighbor();//using the greedy distance as the starting point
 
         System.out.println("Initial solution distance: " + currentSolution.getDistance());
 
