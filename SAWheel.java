@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class SAWheel {
 
-    private static final String fileName = "TSP_10.txt";//name of the input file
+    private static final String fileName = "att48.txt";//name of the input file
 
     public static void main(String[] args) throws IOException {
 
@@ -36,8 +36,8 @@ public class SAWheel {
                 {
                     String[] lineParts = line.split("\\s+");//any number of whitespace characters as delimiter
                     
-                    int x = Integer.parseInt(lineParts[0]);
-                    int y = Integer.parseInt(lineParts[1]);
+                    int x = Integer.parseInt(lineParts[1]);
+                    int y = Integer.parseInt(lineParts[2]);
                     
                     City city = new City(x, y, i-1);//we start city indices from 0 to populate the distance matrix in correct manner
 
@@ -64,17 +64,15 @@ public class SAWheel {
         RouletteWheel wheel = new RouletteWheel();
 
         // Initialize random solution
-        //Tour currentSolution = new Tour();
-        //currentSolution.generateIndividual();
+        Tour currentSolution = new Tour();
+        currentSolution.generateIndividual();//using a random tour as the starting point
 
-        Tour currentSolution = TSP.nearestNeighbor();//using the greedy distance as the starting point
+        //Tour currentSolution = TSP.nearestNeighbor();//using the greedy distance as the starting point
 
         System.out.println("Initial solution distance: " + currentSolution.getDistance());
         
         // Set as current best
         Tour best = new Tour(currentSolution.getTour());
-
-        wheel.printFitMatrix();
         
         double temp        = 100000;
         double coolingRate = 1/temp;
@@ -109,7 +107,6 @@ public class SAWheel {
         timer.stop();
 
         System.out.println(timer.getElapsedTimeSecs()+";"+best.getDistance());
-        System.out.println();
             
     }
     

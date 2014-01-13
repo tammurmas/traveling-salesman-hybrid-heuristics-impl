@@ -52,7 +52,7 @@ public class TSP {
                     
             }
             
-            current = TourManager.getCity(nextId-1);//set next city as current
+            current = TourManager.getCity(nextId);//set next city as current
             visited.add(nextId);
             
             tour.setCity(n, current);//add to tour
