@@ -17,7 +17,10 @@ Use the SASwap.java and SAWheel.java to run heuristics. Make sure to set proper 
 
 A sample input file structure:
 
-# filename
+\# filename
+
 1 x1 y1
+
 2 x2 y2
+
 ...
