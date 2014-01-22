@@ -4,7 +4,7 @@ project
 A student project in Advanced Algorithmics course.
 The repository contains the following:
 
-City.java - represents the City entity with its coordinates and index number.
+City.java - represents the City entity with its coordinates and index number.\#
 Tour.java - a collection of cities as a tour.
 TourManager.java - class for managing the given tour.
 SASwap.java - Contains the standard simulated annealing algorithm with the traditional swapping operator.
