@@ -8,7 +8,7 @@
  * Defines a city object based on its coordinates and index number
  */
 
-package tamm.aa.project;
+package org.tamm.salesman;
 
 public class City {
     int x;

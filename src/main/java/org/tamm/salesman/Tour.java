@@ -8,7 +8,7 @@
  * Defines a path
  */
 
-package tamm.aa.project;
+package org.tamm.salesman;
 
 import java.util.ArrayList;
 import java.util.Collections;

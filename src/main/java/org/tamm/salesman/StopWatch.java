@@ -1,4 +1,4 @@
-package tamm.aa.project;
+package org.tamm.salesman;
 /*
     Copyright (c) 2005, Corey Goldberg
 

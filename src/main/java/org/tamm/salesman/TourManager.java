@@ -8,7 +8,7 @@
  * Manages all the cities in our TSP
  */
 
-package tamm.aa.project;
+package org.tamm.salesman;
 
 import java.util.ArrayList;
 

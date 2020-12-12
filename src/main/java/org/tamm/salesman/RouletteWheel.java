@@ -3,7 +3,7 @@
  * 
  * @author Urmas T.
  */
-package tamm.aa.project;
+package org.tamm.salesman;
 
 import java.util.Random;
 

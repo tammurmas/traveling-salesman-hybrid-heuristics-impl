@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tamm.aa.project;
+package org.tamm.salesman;
 
 import java.util.ArrayList;
 
