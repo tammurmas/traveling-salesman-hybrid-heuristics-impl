@@ -1,40 +1,39 @@
-/**
- * 
- * Code downloaded from: http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
- * Author: Lee Jacobson
- * 
- * Edited by: Urmas T.
- * 
- * Defines a path
- */
-
 package org.tamm.salesman;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Tour{
+/**
+ *
+ * Code downloaded from: http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
+ * Author: Lee Jacobson
+ *
+ * Edited by: Urmas T.
+ *
+ * Defines a path
+ */
+@Getter
+@Setter
+public class Tour {
 
     // Holds our tour of cities
-    private ArrayList tour = new ArrayList();
+    private ArrayList<City> cities = new ArrayList<>();
     // Cache
     private int distance = 0;
-    
+
     // Constructs a blank tour
-    public Tour(){
+    public Tour() {
         for (int i = 0; i < TourManager.numberOfCities(); i++) {
-            tour.add(null);
+            cities.add(null);
         }
     }
-    
+
     // Constructs a tour from another tour
-    public Tour(ArrayList tour){
-        this.tour = (ArrayList) tour.clone();
-    }
-    
-    // Returns tour information
-    public ArrayList getTour(){
-        return tour;
+    public Tour(ArrayList<City> cities){
+        this.cities = cities;
     }
 
     /**
@@ -46,12 +45,12 @@ public class Tour{
           setCity(cityIndex, TourManager.getCity(cityIndex));
         }
         // Randomly reorder the tour
-        Collections.shuffle(tour);
+        Collections.shuffle(cities);
     }
 
     // Gets a city from the tour
     public City getCity(int tourPosition) {
-        return (City)tour.get(tourPosition);
+        return cities.get(tourPosition);
     }
 
     /**
@@ -61,7 +60,7 @@ public class Tour{
      * @param city 
      */
     public void setCity(int tourPosition, City city) {
-        tour.set(tourPosition, city);
+        cities.set(tourPosition, city);
         // If the tours been altered we need to reset the fitness and distance
         distance = 0;
     }
@@ -70,7 +69,7 @@ public class Tour{
      * Calculates the total distance of a tour
      * @return 
      */
-    public int getDistance(){
+    public int getDistance() {
         if (distance == 0) {
             int tourDistance = 0;
             // Loop through our tour's cities
@@ -81,7 +80,7 @@ public class Tour{
                 City destinationCity;
                 // Check we're not on our tour's last city, if we are set our 
                 // tour's final destination city to our starting city
-                if(cityIndex+1 < tourSize()){
+                if (cityIndex + 1 < tourSize()){
                     destinationCity = getCity(cityIndex+1);
                 }
                 else{
@@ -103,31 +102,30 @@ public class Tour{
     public void swap(int sourceId, int sinkId)
     {
         City sink = TourManager.getCity(sinkId);
-        
-        ArrayList copy = new ArrayList();
-        copy.addAll(this.getTour());
-        this.getTour().clear();
+
+        ArrayList<City> copy = new ArrayList<>(cities);
+        cities.clear();
         
         for (int cityIndex = 0; cityIndex < TourManager.numberOfCities(); cityIndex++) {
             
-            if(((City)copy.get(cityIndex)).getI() != sinkId)
+            if((copy.get(cityIndex)).getI() != sinkId)
             {
-                this.getTour().add(copy.get(cityIndex));
+                cities.add(copy.get(cityIndex));
             }
             
-            if(((City)copy.get(cityIndex)).getI() == sourceId)
+            if((copy.get(cityIndex)).getI() == sourceId)
             {
-                this.getTour().add(sink);
+                cities.add(sink);
             }
         }
     }
-    
+
     /**
      * Helper to get the tour size
-     * @return 
+     * @return
      */
     public int tourSize() {
-        return tour.size();
+        return cities.size();
     }
     
     @Override

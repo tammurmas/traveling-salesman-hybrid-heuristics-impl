@@ -1,84 +1,46 @@
-/**
- * 
- * Code downloaded from: http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
- * Author: Lee Jacobson
- * 
- * Edited by: Urmas T.
- * 
- * Calculating optimal solution for the TSP using the SA algorithm with the swapping operator
- */
-
 package org.tamm.salesman;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 
-public class SASwap {
+/**
+ *
+ * Code downloaded from: http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
+ * Author: Lee Jacobson
+ *
+ * Edited by: Urmas T.
+ *
+ * Calculating optimal solution for the TSP using the SA algorithm with the swapping operator
+ */
+@Slf4j
+public class SASwap implements TravelingSalesmanAlgorithm {
 
-    private static final String fileName = "att48.txt";//name of the input file
+    private static final double INITIAL_TEMPERATURE = 100000;
+    private static final double COOLING_RATE = 1 / INITIAL_TEMPERATURE;
 
-    public static void main(String[] args) throws IOException {
-        
-        BufferedReader inputStream = null;
-
-        String line;
-        
-        try {
-            inputStream = new BufferedReader(new FileReader(fileName));
-            
-            int i = 0;
-            
-            while( (line = inputStream.readLine()) != null)
-            {
-                //skip first line
-                if(i > 0)
-                {
-                    String[] lineParts = line.split("\\s+");//any number of whitespace characters as delimiter
-                    
-                    int x = Integer.parseInt(lineParts[1]);
-                    int y = Integer.parseInt(lineParts[2]);
-                    
-                    //we start city indices from 0 to populate the distance matrix in correct manner
-                    City city = new City(x, y, i-1);
-
-                    TourManager.addCity(city);
-                            
-                }
-                i++;
-            }
-        }
-        catch (IOException e){
-            System.out.println(e.getMessage());
-        }
-        finally{
-             if (inputStream != null) {
-                inputStream.close();
-            }
-        }
-        
-        // Set initial temp
-        double temp = 100000;
-        double coolingRate = 1/temp;
+    @Override
+    public Result calculate() {
 
         StopWatch timer = new StopWatch();
         timer.start();
-        
+
         // Initialize random solution
         Tour currentSolution = new Tour();
         currentSolution.generateIndividual();//using a random tour as the starting point
 
         //Tour currentSolution = TSP.nearestNeighbor();//using the greedy distance as the starting point
 
-        System.out.println("Initial solution distance: " + currentSolution.getDistance());
+        log.info("Initial solution distance: " + currentSolution.getDistance());
 
         // Set as current best
-        Tour best = new Tour(currentSolution.getTour());
+        Tour best = new Tour(currentSolution.getCities());
+
+        // Set initial temp
+        double temp = INITIAL_TEMPERATURE;
 
         // Loop until system has cooled
         while (temp > 1) {
             // Create new neighbour tour
-            Tour newSolution = new Tour(currentSolution.getTour());
+            Tour newSolution = new Tour(currentSolution.getCities());
 
             // Get a random positions in the tour
             int tourPos1 = (int) (newSolution.tourSize() * Math.random());
@@ -98,23 +60,27 @@ public class SASwap {
 
             // Decide if we should accept the neighbour
             if (acceptanceProbability(currentEngery, neighbourEngery, temp) > Math.random()) {
-                currentSolution = new Tour(newSolution.getTour());
+                currentSolution = new Tour(newSolution.getCities());
             }
 
             // Keep track of the best solution found
             if (currentSolution.getDistance() < best.getDistance()) {
-                best = new Tour(currentSolution.getTour());
+                best = new Tour(currentSolution.getCities());
             }
 
             // Cool system
-            temp *= 1-coolingRate;
+            temp *= 1-COOLING_RATE;
         }
         timer.stop();
-        
-        System.out.println(timer.getElapsedTimeSecs()+";"+best.getDistance());
-            
+
+        return new Result(timer.getElapsedTimeSecs(), best.getDistance());
     }
-    
+
+    @Override
+    public String getName() {
+        return SASwap.class.getSimpleName();
+    }
+
     /**
      * Function to determine whether or not accept the newly generated solution
      * @param engery
