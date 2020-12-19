@@ -1,49 +1,53 @@
-/**
- * 
- * Code downloaded from: http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
- * Author: Lee Jacobson
- * 
- * Edited by: Urmas T.
- * 
- * Manages all the cities in our TSP
- */
-
 package org.tamm.salesman;
 
 import java.util.ArrayList;
 
+/**
+ *
+ * Code downloaded from: http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
+ * Author: Lee Jacobson
+ *
+ * Edited by: Urmas T.
+ *
+ * Manages all the cities in our TSP
+ */
 public class TourManager {
 
-    private static ArrayList destinationCities = new ArrayList();
+    private static final TourManager INSTANCE = new TourManager();
+
+    private final ArrayList<City> cities;
+
+    private TourManager () {
+        cities = new ArrayList<>();
+    }
+
+    public static TourManager getInstance(){
+        return INSTANCE;
+    }
 
     /**
      * Adds a destination city
-     * @param city 
+     * @param city to be added to tour
      */
-    public static void addCity(City city) {
-        destinationCities.add(city);
+    public void addCity(City city) {
+        cities.add(city);
     }
     
     /**
      * Returns a city on the given index
-     * @param index
-     * @return 
+     * @param index - city's index in tour
+     * @return get the city on given index
      */
-    public static City getCity(int index){
-        return (City)destinationCities.get(index);
+    public City getCity(int index){
+        return cities.get(index);
     }
     
     /**
      * Get the number of cities still to be visited
-     * @return 
+     * @return number of cities left as unvisited
      */
-    public static int numberOfCities(){
-        return destinationCities.size();
-    }
-    
-    public static void clearTour()
-    {
-        destinationCities.clear();
+    public int numberOfCities(){
+        return cities.size();
     }
     
 }

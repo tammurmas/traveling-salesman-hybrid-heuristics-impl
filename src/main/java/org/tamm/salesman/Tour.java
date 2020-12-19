@@ -26,7 +26,7 @@ public class Tour {
 
     // Constructs a blank tour
     public Tour() {
-        for (int i = 0; i < TourManager.numberOfCities(); i++) {
+        for (int i = 0; i < TourManager.getInstance().numberOfCities(); i++) {
             cities.add(null);
         }
     }
@@ -41,8 +41,8 @@ public class Tour {
      */
     public void generateIndividual() {
         // Loop through all our destination cities and add them to our tour
-        for (int cityIndex = 0; cityIndex < TourManager.numberOfCities(); cityIndex++) {
-          setCity(cityIndex, TourManager.getCity(cityIndex));
+        for (int cityIndex = 0; cityIndex < TourManager.getInstance().numberOfCities(); cityIndex++) {
+          setCity(cityIndex, TourManager.getInstance().getCity(cityIndex));
         }
         // Randomly reorder the tour
         Collections.shuffle(cities);
@@ -56,8 +56,8 @@ public class Tour {
     /**
      * Sets a city in a certain position within a tour
      * 
-     * @param tourPosition
-     * @param city 
+     * @param tourPosition - position of city in tour
+     * @param city - the city to be set on given index
      */
     public void setCity(int tourPosition, City city) {
         cities.set(tourPosition, city);
@@ -67,7 +67,7 @@ public class Tour {
     
     /**
      * Calculates the total distance of a tour
-     * @return 
+     * @return total distance of tour
      */
     public int getDistance() {
         if (distance == 0) {
@@ -96,17 +96,17 @@ public class Tour {
 
     /**
      * "Swap" the "sink" city by removing it from its original location and placing behind the "source" city
-     * @param sourceId
-     * @param sinkId 
+     * @param sourceId id of the source city
+     * @param sinkId id of the sink city
      */
     public void swap(int sourceId, int sinkId)
     {
-        City sink = TourManager.getCity(sinkId);
+        City sink = TourManager.getInstance().getCity(sinkId);
 
         ArrayList<City> copy = new ArrayList<>(cities);
         cities.clear();
         
-        for (int cityIndex = 0; cityIndex < TourManager.numberOfCities(); cityIndex++) {
+        for (int cityIndex = 0; cityIndex < TourManager.getInstance().numberOfCities(); cityIndex++) {
             
             if((copy.get(cityIndex)).getI() != sinkId)
             {
@@ -122,7 +122,7 @@ public class Tour {
 
     /**
      * Helper to get the tour size
-     * @return
+     * @return number of cities in tour
      */
     public int tourSize() {
         return cities.size();
@@ -130,11 +130,11 @@ public class Tour {
     
     @Override
     public String toString() {
-        String tour = "";
+        StringBuilder tour = new StringBuilder();
         for (int i = 0; i < tourSize(); i++) {
             if(i+1 < tourSize())
-                tour += "line "+getCity(i)+" "+getCity(i+1)+"\n";
+                tour.append("line ").append(getCity(i)).append(" ").append(getCity(i + 1)).append("\n");
         }
-        return tour;
+        return tour.toString();
     }
 }
