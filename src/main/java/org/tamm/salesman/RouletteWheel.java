@@ -9,57 +9,13 @@ import java.util.Random;
  */
 public class RouletteWheel {
     
-    protected double[][] distMatrix;
-    protected double[][] fitMatrix;
+    private double[][] distMatrix;
+    private double[][] fitMatrix;
 
     public RouletteWheel() {
-        TourManager tourManager = TourManager.getInstance();
-        this.distMatrix = new double[tourManager.numberOfCities()][tourManager.numberOfCities()];
-        
-        double maxDist = 0;
-        
-        for (int i=0; i<tourManager.numberOfCities(); i++)
-        {
-            City city1 = tourManager.getCity(i);
-            for (int j=0; j<tourManager.numberOfCities(); j++)
-            {
-                City city2 = tourManager.getCity(j);
-                this.distMatrix[i][j] = city1.distanceTo(city2);
-                
-                if(this.distMatrix[i][j] > maxDist)
-                    maxDist = this.distMatrix[i][j];
-            }
-        }
-        
-        this.fitMatrix = new double[tourManager.numberOfCities()][tourManager.numberOfCities()];
-        double totalFit = 0;//sum of all fitness values to define ranges in the roulette wheel
-        
-        for (int i=0; i<tourManager.numberOfCities(); i++)
-        {
-            
-            for (int j=0; j<tourManager.numberOfCities(); j++)
-            {
-                if(this.distMatrix[i][j] == 0)
-                    this.fitMatrix[i][j] = 0;
-                else
-                {
-                    this.fitMatrix[i][j] = 1/(this.distMatrix[i][j]/maxDist);//using the max edge as the divider shorter edges get larger fitness values
-                    totalFit += this.fitMatrix[i][j];
-                }
-            }
-        }
-        
-        //calculate ranges on the roulette wheel
-        for (int i=0; i<tourManager.numberOfCities(); i++)
-        {
-            
-            for (int j=0; j<tourManager.numberOfCities(); j++)
-            {
-                 this.fitMatrix[i][j] = this.fitMatrix[i][j]/totalFit*100;
-            }
-        }
+        initRouletteWheel();
     }
-    
+
     /**
      * Spinning the wheel 
      * Generate a random winning number and sum the values in matrix until reaching it
@@ -75,7 +31,7 @@ public class RouletteWheel {
         {
             for (int j=0; j<TourManager.getInstance().numberOfCities(); j++)
             {
-                sum += this.fitMatrix[i][j];
+                sum += fitMatrix[i][j];
                 if(winNr < sum)//we have reached the needed range
                 {
                     indices[0] = i;
@@ -88,13 +44,102 @@ public class RouletteWheel {
         
         return indices;
     }
+
+    public double[][] getDistMatrix()
+    {
+        return distMatrix;
+    }
+
+    public void printFitMatrix()
+    {
+        TourManager tourManager = TourManager.getInstance();
+        for (int i=0; i<tourManager.numberOfCities(); i++)
+        {
+            for (int j=0; j<tourManager.numberOfCities(); j++)
+            {
+                System.out.print(fitMatrix[i][j]+" ");
+            }
+            System.out.println();
+        }
+    }
+
+    public void printDistMatrix()
+    {
+        TourManager tourManager = TourManager.getInstance();
+        for (int i=0; i<tourManager.numberOfCities(); i++)
+        {
+            for (int j=0; j<tourManager.numberOfCities(); j++)
+            {
+                System.out.print(distMatrix[i][j]+" ");
+            }
+            System.out.println();
+        }
+    }
+
+    private void initRouletteWheel() {
+        TourManager tourManager = TourManager.getInstance();
+        double maxDistance = calculateDistanceMatrix(tourManager);
+        calculateFitnessMatrix(tourManager, maxDistance);
+    }
+
+    private void calculateFitnessMatrix(TourManager tourManager, double maxDistance) {
+        fitMatrix = new double[tourManager.numberOfCities()][tourManager.numberOfCities()];
+        double totalFitness = 0;//sum of all fitness values to define ranges in the roulette wheel
+
+        for (int i = 0; i< tourManager.numberOfCities(); i++)
+        {
+
+            for (int j = 0; j< tourManager.numberOfCities(); j++)
+            {
+                if(distMatrix[i][j] == 0)
+                    fitMatrix[i][j] = 0;
+                else
+                {
+                    fitMatrix[i][j] = 1/(distMatrix[i][j]/ maxDistance);//using the max edge as the divider shorter edges get larger fitness values
+                    totalFitness += fitMatrix[i][j];
+                }
+            }
+        }
+
+        //calculate ranges on the roulette wheel
+        calculateRanges(tourManager, totalFitness);
+    }
+
+    private void calculateRanges(TourManager tourManager, double totalFitness) {
+        for (int i = 0; i< tourManager.numberOfCities(); i++)
+        {
+            for (int j = 0; j< tourManager.numberOfCities(); j++)
+            {
+                fitMatrix[i][j] = fitMatrix[i][j]/ totalFitness *100;
+            }
+        }
+    }
+
+    private double calculateDistanceMatrix(TourManager tourManager) {
+        double maxDist = 0;
+
+        distMatrix = new double[tourManager.numberOfCities()][tourManager.numberOfCities()];
+        for (int i = 0; i< tourManager.numberOfCities(); i++)
+        {
+            City city1 = tourManager.getCity(i);
+            for (int j = 0; j< tourManager.numberOfCities(); j++)
+            {
+                City city2 = tourManager.getCity(j);
+                distMatrix[i][j] = city1.distanceTo(city2);
+
+                if(distMatrix[i][j] > maxDist)
+                    maxDist = distMatrix[i][j];
+            }
+        }
+        return maxDist;
+    }
     
     /**
      * A small helper for generating random integers
      * HINT: http://stackoverflow.com/questions/363681/generating-random-numbers-in-a-range-with-java
      * @return random double value
      */
-    public static double randDouble()
+    private static double randDouble()
     {
         Random rand = new Random();
         
@@ -107,36 +152,5 @@ public class RouletteWheel {
         
         return val;
     }
-    
-    public double[][] getDistMatrix()
-    {
-        return this.distMatrix;
-    }
-    
-    public void printFitMatrix()
-    {
-        TourManager tourManager = TourManager.getInstance();
-        for (int i=0; i<tourManager.numberOfCities(); i++)
-        {
-            for (int j=0; j<tourManager.numberOfCities(); j++)
-            {
-                System.out.print(this.fitMatrix[i][j]+" ");
-            }
-            System.out.println();
-        }
-    }
-    
-    public void printDistMatrix()
-    {
-        TourManager tourManager = TourManager.getInstance();
-        for (int i=0; i<tourManager.numberOfCities(); i++)
-        {
-            for (int j=0; j<tourManager.numberOfCities(); j++)
-            {
-                System.out.print(this.distMatrix[i][j]+" ");
-            }
-            System.out.println();
-        }
-    }
-    
+
 }
