@@ -26,10 +26,11 @@ public class RouletteWheel {
         double winNr  = randDouble();
         double sum    = 0.0;
         int[] indices = new int[2];
-        
-        for (int i=0; i<TourManager.getInstance().numberOfCities(); i++)
+
+        Tour managerTour = TourManager.getInstance().getTour();
+        for (int i = 0; i< managerTour.tourSize(); i++)
         {
-            for (int j=0; j<TourManager.getInstance().numberOfCities(); j++)
+            for (int j = 0; j< managerTour.tourSize(); j++)
             {
                 sum += fitMatrix[i][j];
                 if(winNr < sum)//we have reached the needed range
@@ -52,10 +53,10 @@ public class RouletteWheel {
 
     public void printFitMatrix()
     {
-        TourManager tourManager = TourManager.getInstance();
-        for (int i=0; i<tourManager.numberOfCities(); i++)
+        Tour managerTour = TourManager.getInstance().getTour();
+        for (int i=0; i<managerTour.tourSize(); i++)
         {
-            for (int j=0; j<tourManager.numberOfCities(); j++)
+            for (int j=0; j<managerTour.tourSize(); j++)
             {
                 System.out.print(fitMatrix[i][j]+" ");
             }
@@ -65,10 +66,10 @@ public class RouletteWheel {
 
     public void printDistMatrix()
     {
-        TourManager tourManager = TourManager.getInstance();
-        for (int i=0; i<tourManager.numberOfCities(); i++)
+        Tour managerTour = TourManager.getInstance().getTour();
+        for (int i=0; i<managerTour.tourSize(); i++)
         {
-            for (int j=0; j<tourManager.numberOfCities(); j++)
+            for (int j=0; j<managerTour.tourSize(); j++)
             {
                 System.out.print(distMatrix[i][j]+" ");
             }
@@ -83,13 +84,14 @@ public class RouletteWheel {
     }
 
     private void calculateFitnessMatrix(TourManager tourManager, double maxDistance) {
-        fitMatrix = new double[tourManager.numberOfCities()][tourManager.numberOfCities()];
+        Tour managerTour = TourManager.getInstance().getTour();
+        fitMatrix = new double[managerTour.tourSize()][managerTour.tourSize()];
         double totalFitness = 0;//sum of all fitness values to define ranges in the roulette wheel
 
-        for (int i = 0; i< tourManager.numberOfCities(); i++)
+        for (int i = 0; i< managerTour.tourSize(); i++)
         {
 
-            for (int j = 0; j< tourManager.numberOfCities(); j++)
+            for (int j = 0; j< managerTour.tourSize(); j++)
             {
                 if(distMatrix[i][j] == 0)
                     fitMatrix[i][j] = 0;
@@ -102,13 +104,14 @@ public class RouletteWheel {
         }
 
         //calculate ranges on the roulette wheel
-        calculateRanges(tourManager, totalFitness);
+        calculateRanges(totalFitness);
     }
 
-    private void calculateRanges(TourManager tourManager, double totalFitness) {
-        for (int i = 0; i< tourManager.numberOfCities(); i++)
+    private void calculateRanges(double totalFitness) {
+        Tour managerTour = TourManager.getInstance().getTour();
+        for (int i = 0; i< managerTour.tourSize(); i++)
         {
-            for (int j = 0; j< tourManager.numberOfCities(); j++)
+            for (int j = 0; j< managerTour.tourSize(); j++)
             {
                 fitMatrix[i][j] = fitMatrix[i][j]/ totalFitness *100;
             }
@@ -116,15 +119,16 @@ public class RouletteWheel {
     }
 
     private double calculateDistanceMatrix(TourManager tourManager) {
+        Tour managerTour = TourManager.getInstance().getTour();
         double maxDist = 0;
 
-        distMatrix = new double[tourManager.numberOfCities()][tourManager.numberOfCities()];
-        for (int i = 0; i< tourManager.numberOfCities(); i++)
+        distMatrix = new double[managerTour.tourSize()][managerTour.tourSize()];
+        for (int i = 0; i< managerTour.tourSize(); i++)
         {
-            City city1 = tourManager.getCity(i);
-            for (int j = 0; j< tourManager.numberOfCities(); j++)
+            City city1 = managerTour.getCity(i);
+            for (int j = 0; j< managerTour.tourSize(); j++)
             {
-                City city2 = tourManager.getCity(j);
+                City city2 = managerTour.getCity(j);
                 distMatrix[i][j] = city1.distanceTo(city2);
 
                 if(distMatrix[i][j] > maxDist)

@@ -1,5 +1,8 @@
 package org.tamm.salesman;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.ArrayList;
 
 /**
@@ -11,43 +14,19 @@ import java.util.ArrayList;
  *
  * Manages all the cities in our TSP
  */
+@Getter
 public class TourManager {
 
     private static final TourManager INSTANCE = new TourManager();
 
-    private final ArrayList<City> cities;
+    private final Tour tour;
 
     private TourManager () {
-        cities = new ArrayList<>();
+        tour = new Tour(new ArrayList<>());
     }
 
     public static TourManager getInstance(){
         return INSTANCE;
-    }
-
-    /**
-     * Adds a destination city
-     * @param city to be added to tour
-     */
-    public void addCity(City city) {
-        cities.add(city);
-    }
-    
-    /**
-     * Returns a city on the given index
-     * @param index - city's index in tour
-     * @return get the city on given index
-     */
-    public City getCity(int index){
-        return cities.get(index);
-    }
-    
-    /**
-     * Get the number of cities still to be visited
-     * @return number of cities left as unvisited
-     */
-    public int numberOfCities(){
-        return cities.size();
     }
     
 }

@@ -22,7 +22,7 @@ public interface TravelingSalesmanAlgorithm {
                     int y = Integer.parseInt(lineParts[2]);
                     //we start city indices from 0 to populate the distance matrix in correct manner
                     City city = new City(x, y, i - 1);
-                    TourManager.getInstance().addCity(city);
+                    TourManager.getInstance().getTour().getCities().add(city);
                 }
                 i++;
             }

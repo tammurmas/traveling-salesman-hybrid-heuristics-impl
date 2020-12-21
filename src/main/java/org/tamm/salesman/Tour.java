@@ -20,18 +20,19 @@ import java.util.Collections;
 public class Tour {
 
     // Holds our tour of cities
-    private ArrayList<City> cities = new ArrayList<>();
+    private ArrayList<City> cities;
     // Cache
     private int distance = 0;
 
     // Constructs a blank tour
     public Tour() {
-        for (int i = 0; i < TourManager.getInstance().numberOfCities(); i++) {
+        cities = new ArrayList<>();
+        for (int i = 0; i < TourManager.getInstance().getTour().tourSize(); i++) {
             cities.add(null);
         }
     }
 
-    // Constructs a tour from another tour
+    // Constructs a tour from a list of cities
     public Tour(ArrayList<City> cities){
         this.cities = cities;
     }
@@ -41,8 +42,8 @@ public class Tour {
      */
     public void generateIndividual() {
         // Loop through all our destination cities and add them to our tour
-        for (int cityIndex = 0; cityIndex < TourManager.getInstance().numberOfCities(); cityIndex++) {
-          setCity(cityIndex, TourManager.getInstance().getCity(cityIndex));
+        for (int cityIndex = 0; cityIndex < TourManager.getInstance().getTour().tourSize(); cityIndex++) {
+          setCity(cityIndex, TourManager.getInstance().getTour().getCity(cityIndex));
         }
         // Randomly reorder the tour
         Collections.shuffle(cities);
@@ -101,12 +102,13 @@ public class Tour {
      */
     public void swap(int sourceId, int sinkId)
     {
-        City sink = TourManager.getInstance().getCity(sinkId);
+        Tour baseTour = TourManager.getInstance().getTour();
+        City sink = baseTour.getCity(sinkId);
 
         ArrayList<City> copy = new ArrayList<>(cities);
         cities.clear();
         
-        for (int cityIndex = 0; cityIndex < TourManager.getInstance().numberOfCities(); cityIndex++) {
+        for (int cityIndex = 0; cityIndex < baseTour.tourSize(); cityIndex++) {
             
             if((copy.get(cityIndex)).getI() != sinkId)
             {
