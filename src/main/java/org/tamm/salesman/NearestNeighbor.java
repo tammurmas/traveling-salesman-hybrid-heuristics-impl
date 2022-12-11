@@ -35,10 +35,10 @@ public class NearestNeighbor implements TravelingSalesmanAlgorithm {
 
         City current = currentSolution.getCity(0);//add the first city into our tour
         tour.setCity(0, current);
-        visited.add(current.getI());
+        visited.add(current.index());
         
         double minDistance = Double.MAX_VALUE;
-        int nextId = current.getI();
+        int nextId = current.index();
         int n = 1;
 
         while (visited.size() < currentSolution.getCities().size())
@@ -47,13 +47,13 @@ public class NearestNeighbor implements TravelingSalesmanAlgorithm {
             {
                 City city = currentSolution.getCity(i);
                 //put aside cities we've already been to
-                if(!visited.contains(city.getI()))
+                if(!visited.contains(city.index()))
                 {
                     double distance = current.distanceTo(city);
                     if(distance < minDistance)
                     {
                         minDistance = distance;
-                        nextId = city.getI();
+                        nextId = city.index();
                     }
                 }
                     
@@ -70,11 +70,6 @@ public class NearestNeighbor implements TravelingSalesmanAlgorithm {
         timer.stop();
 
         return new Result(timer.getElapsedTimeSecs(), tour.getDistance());
-    }
-
-    @Override
-    public String getName() {
-        return NearestNeighbor.class.getSimpleName();
     }
 
 }

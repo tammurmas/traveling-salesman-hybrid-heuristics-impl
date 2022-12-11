@@ -4,11 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  *
- * Code downloaded from: http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
+ * Code downloaded from:
+ * <a href="http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6">...</a>
  * Author: Lee Jacobson
- *
  * Edited by: Urmas T.
- *
  * Calculating optimal solution for the TSP using the modified SA algorithm with roulette wheel
  */
 @Slf4j
@@ -71,24 +70,19 @@ public class SAWheel implements TravelingSalesmanAlgorithm {
     }
     
     /**
-     * Function to determine whether or not accept the newly generated solution
+     * Function to determine whether to accept newly generated solution
      * @param energy
      * @param newEnergy
      * @param temperature
      * @return 
      */
-    public static double acceptanceProbability(int energy, int newEnergy, double temperature) {
+    private static double acceptanceProbability(int energy, int newEnergy, double temperature) {
         // If the new solution is better, accept it
         if (newEnergy < energy) {
             return 1.0;
         }
         // If the new solution is worse, calculate an acceptance probability
         return Math.exp((energy - newEnergy) / temperature);
-    }
-
-    @Override
-    public String getName() {
-        return SAWheel.class.getSimpleName();
     }
 
 }

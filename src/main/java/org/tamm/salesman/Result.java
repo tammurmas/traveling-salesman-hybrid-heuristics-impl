@@ -1,11 +1,13 @@
 package org.tamm.salesman;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+/**
+ * Object holding algorithm run results
+ *
+ * @param duration algorithm run time
+ * @param distance best calculated distance
+ *
+ * @author Urmas Tamm
+ */
+public record Result(float duration, int distance) {
 
-@Getter
-@AllArgsConstructor
-public class Result {
-    float duration;
-    int distance;
 }

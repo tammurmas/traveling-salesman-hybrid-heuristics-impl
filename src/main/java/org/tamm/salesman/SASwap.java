@@ -4,11 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  *
- * Code downloaded from: http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
+ * Code downloaded from:
+ * <a href="http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6">...</a>
  * Author: Lee Jacobson
- *
  * Edited by: Urmas T.
- *
  * Calculating optimal solution for the TSP using the SA algorithm with the swapping operator
  */
 @Slf4j
@@ -76,19 +75,14 @@ public class SASwap implements TravelingSalesmanAlgorithm {
         return new Result(timer.getElapsedTimeSecs(), best.getDistance());
     }
 
-    @Override
-    public String getName() {
-        return SASwap.class.getSimpleName();
-    }
-
     /**
-     * Function to determine whether or not accept the newly generated solution
+     * Function to determine whether to accept newly generated solution
      * @param engery
      * @param newEngery
      * @param temperature
      * @return 
      */
-    public static double acceptanceProbability(int engery, int newEngery, double temperature) {
+    private static double acceptanceProbability(int engery, int newEngery, double temperature) {
         // If the new solution is better, accept it
         if (newEngery < engery) {
             return 1.0;

@@ -8,11 +8,10 @@ import java.util.Collections;
 
 /**
  *
- * Code downloaded from: http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
+ * Code downloaded from:
+ * <a href="http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6">...</a>
  * Author: Lee Jacobson
- *
  * Edited by: Urmas T.
- *
  * Defines a path
  */
 @Getter
@@ -42,8 +41,8 @@ public class Tour {
      */
     public void generateIndividual() {
         // Loop through all our destination cities and add them to our tour
-        for (int cityIndex = 0; cityIndex < TourManager.getInstance().getTour().tourSize(); cityIndex++) {
-          setCity(cityIndex, TourManager.getInstance().getTour().getCity(cityIndex));
+        for (int i = 0; i < TourManager.getInstance().getTour().tourSize(); i++) {
+          setCity(i, TourManager.getInstance().getTour().getCity(i));
         }
         // Randomly reorder the tour
         Collections.shuffle(cities);
@@ -110,12 +109,12 @@ public class Tour {
         
         for (int cityIndex = 0; cityIndex < baseTour.tourSize(); cityIndex++) {
             
-            if((copy.get(cityIndex)).getI() != sinkId)
+            if((copy.get(cityIndex)).index() != sinkId)
             {
                 cities.add(copy.get(cityIndex));
             }
             
-            if((copy.get(cityIndex)).getI() == sourceId)
+            if((copy.get(cityIndex)).index() == sourceId)
             {
                 cities.add(sink);
             }
