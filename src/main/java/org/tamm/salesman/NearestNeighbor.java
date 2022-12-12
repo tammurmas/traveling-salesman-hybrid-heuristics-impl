@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.tamm.salesman;
 
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +9,6 @@ import java.util.ArrayList;
  * 
  * @author Urmas T.
  */
-
 @Slf4j
 public class NearestNeighbor implements TravelingSalesmanAlgorithm {
     

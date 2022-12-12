@@ -1,17 +1,14 @@
 package org.tamm.salesman;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.ArrayList;
 
 /**
  *
- * Code downloaded from: http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
+ * Code downloaded from: <a href="http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6">...</a>
  * Author: Lee Jacobson
- *
  * Edited by: Urmas T.
- *
  * Manages all the cities in our TSP
  */
 @Getter

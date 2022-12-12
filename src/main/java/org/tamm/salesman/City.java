@@ -1,4 +1,6 @@
-/**
+package org.tamm.salesman;
+
+/*
  * Code downloaded from: http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
  * Author: Lee Jacobson
  * <p>
@@ -6,8 +8,6 @@
  * <p>
  * Defines a city object based on its coordinates and index number
  */
-
-package org.tamm.salesman;
 
 /**
  * Defines a city with it's x and y coordinates and index number
